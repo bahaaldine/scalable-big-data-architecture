@@ -1,0 +1,21 @@
+{
+  "network": {
+    "servers": [ "localhost:5043" ],
+    "ssl certificate": "../security/lumberjack.crt",
+    "ssl key": "../security/lumberjack.key",
+    "ssl ca": "../security/lumberjack.crt",
+    "timeout": 15
+  },
+
+  "files": [
+    {
+      "paths": [
+        "/Users/bahaaldine/Dropbox/apress/demo/chapter4/source/access_log_*"
+      ],
+      "fields": { "type": "access_log" }
+    }, {
+      "paths": [ "-" ],
+      "fields": { "type": "stdin" }
+    }
+  ]
+}
