@@ -1,0 +1,80 @@
+zookeeper1:
+  image: bahaaldine/docker-zookeeper
+  volumes:
+    - "kafka/server1:/etc/kafka"
+    - "logs/logstash-zookeeper1:/opt/kafka/logs/"
+  ports:
+    - "2181:2181"
+  extra_hosts:
+    - "brokers:192.168.59.103"
+
+kafka1:
+  image: bahaaldine/docker-kafka
+  volumes:
+    - "kafka/server1:/etc/kafka"
+    - "logs/logstash-kafka1:/opt/kafka/logs/"
+  extra_hosts:
+    - "brokers:192.168.59.103"
+  ports:
+    - "9092:9092"
+
+kafka2:
+  image: bahaaldine/docker-kafka
+  volumes:
+    - "kafka/server2:/etc/kafka"
+    - "logs/logstash-kafka2:/opt/kafka/logs/"
+  extra_hosts:
+    - "brokers:192.168.59.103"
+  links:
+    - "kafka1"
+  ports:
+    - "9093:9093"
+
+logstashProcessor1:
+  image: bahaaldine/docker-logstash-agent
+  volumes:
+    - "logstash/processor:/etc/logstash"
+    - "security:/etc/logstash/security"
+    - "logs/logstash-processor1:/var/log/logstash"
+  links:
+    - kafka1
+  ports:
+    - "5043:5043"
+
+elasticsearch1:
+  image: bahaaldine/docker-elasticsearch
+  ports:
+    - "9200:9200"
+  volumes:
+    - "logs/elasticsearch1:/var/log/elasticsearch"
+    - "templates:/etc/elasticsearch/templates"
+  extra_hosts:
+    - "elasticsearch:192.168.59.103"
+
+logstashIndexer1:
+  image: bahaaldine/docker-logstash-agent
+  volumes:
+    - "logstash/indexer:/etc/logstash"
+    - "logs/logstash-indexer1:/var/log/logstash"
+  links:
+    - elasticsearch1
+  extra_hosts:
+    - "brokers:192.168.59.103"
+
+logstashForwarder:
+  image: bahaaldine/docker-logstash-forwarder
+  volumes:
+    - "logstash/forwarder:/etc/logstash-forwarder"
+    - "security:/etc/logstash-forwarder/security"
+    - "logs/logstash-forwarder1:/tmp/logs/"
+    - "source:/tmp/source"
+  extra_hosts:
+    - "processors:192.168.59.103"
+kibana1:
+  image: bahaaldine/docker-kibana
+  ports:
+    - "5601:5601"
+  volumes:
+    - "logs/kibana:/var/log/kibana"
+  extra_hosts:
+    - "elasticsearch:192.168.59.103"

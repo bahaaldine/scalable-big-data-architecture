@@ -1,0 +1,21 @@
+{
+  "network": {
+    "servers": [ "processors:5043" ],
+    "ssl certificate": "/etc/logstash-forwarder/security/lumberjack.crt",
+    "ssl key": "/etc/logstash-forwarder/security/lumberjack.key",
+    "ssl ca": "/etc/logstash-forwarder/security/lumberjack.crt",
+    "timeout": 15
+  },
+
+  "files": [
+    {
+      "paths": [
+        "/tmp/source/access_log_*"
+      ],
+      "fields": { "type": "access_log" }
+    }, {
+      "paths": [ "-" ],
+      "fields": { "type": "stdin" }
+    }
+  ]
+}

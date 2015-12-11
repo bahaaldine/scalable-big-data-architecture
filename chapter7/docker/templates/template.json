@@ -1,0 +1,33 @@
+{
+  "template_1" : {
+    "template" : "*",
+    "settings" : {
+        "index.number_of_shards" : 1,
+        "index.number_of_replicas" : 0
+    },
+    "mappings" : {
+      "_default_": {
+        "dynamic_templates": [
+          {
+            "string_fields": {
+              "mapping": {
+                "index": "not_analyzed",
+                "omit_norms": true,
+                "type": "string"
+              },
+              "match_mapping_type": "string",
+              "match": "*"
+            }
+          }
+        ],
+        "_all": {
+          "enabled": true
+        },
+        "properties": {
+          "bytes": { "type": "integer" },
+          "response": { "type": "integer" }
+        }        
+      }
+    }
+  }
+}
