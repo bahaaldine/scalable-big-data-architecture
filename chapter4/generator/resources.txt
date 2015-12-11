@@ -1,0 +1,16 @@
+/products/product1
+/products/product2
+/products/product3
+/products/product4
+/products/product5
+/products/product6
+/store/cart
+/store/cart/checkout
+/account
+/page1
+/page2
+/page3
+/page4
+/page5
+/page6
+/page6
